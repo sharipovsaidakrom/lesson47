@@ -1,0 +1,52 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-10">
+          <h1>Courses</h1>
+        </div>
+        <div class="">
+          <div class="col-sm-2">
+            <a href="/courses/add" class="btn btn-primary">Kurs qo'shish</a>
+          </div>
+          <div class="col-sm-2">
+            <a href="/courses/edit" class="btn btn-primary">Kursni o'zgartirish</a>
+          </div>
+          <div class="col-sm-2">
+            <a href="/courses/delete" class="btn btn-danger">Kursni o'chirish</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Kurslar</th>
+                <th>Boshlangan vaqti</th>
+                <th>Tugash vaqti</th>
+                <th>Izoh</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each payments}}
+              <tr>
+                <td>{{this.id}}</td>
+                <td>{{userName id=this.user_id name="ruslanmedia"}}</td>
+                <td>{{amountWithType type=this.type amount=this.amount}}</td>
+                <td>{{formattedDate this.created_at}}</td>
+                <td>{{this.comment}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
