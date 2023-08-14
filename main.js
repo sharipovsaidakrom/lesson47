@@ -180,3 +180,4 @@ app.post('/login', checkUser, (req, res) => {
 app.listen(5555, () => {
     console.log("Sayt http://localhost:5555 linkida ishga tushdi");
 })
+
