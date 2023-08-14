@@ -69,28 +69,32 @@ app.get('/', checkLogin, (req, res) => {
     res.render('home', {
         isActive1: 'active',
         isActive2: '',
-        isActive3: ''
+        isActive3: '',
+        isActive4: ''
     })
 })
 app.get('/home', checkLogin, (req, res) => {
     res.render('home', {
         isActive1: 'active',
         isActive2: '',
-        isActive3: ''
+        isActive3: '',
+        isActive4: ''
     });
 })
 app.get('/groups', checkLogin, (req, res) => {
     res.render('groups', {
         isActive1: '',
         isActive2: 'active',
-        isActive3: ''
+        isActive3: '',
+        isActive4: ''
     });
 })
 app.get('/payments(/index)?', checkLogin, (req, res) => {
     res.render('payments/index', {
         isActive1: '',
         isActive2: '',
-        isActive3: 'active',
+        isActive3: '',
+        isActive4: 'active',
         payments: payments,
         helpers: {
             userName(data) {
@@ -112,7 +116,7 @@ app.get('/payments(/index)?', checkLogin, (req, res) => {
 
 app.get('/payments/add', checkLogin, (req, res) => {
     res.render('payments/add')
-    console.log(req.body);
+    // console.log(req.body);
 })
 
 app.post('/payments/add', checkLogin, (req, res) => {
@@ -175,6 +179,71 @@ app.post('/login', checkUser, (req, res) => {
     req.session.username = req.body.username;
     res.redirect('/');
     return
+})
+
+app.get('/courses', checkUser, (req, res) => {
+    res.render('courses/index', {
+        isActive1: '',
+        isActive2: '',
+        isActive3: 'active',
+        isActive4: ''
+    });
+})
+
+const course_read = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/courses.json')));
+
+app.get('/courses/add', (req, res) => {
+    res.render('courses/add')
+})
+
+app.post('/courses/add', checkUser, (req, res) => {
+    res.render('courses/add', {
+        isActive1: '',
+        isActive2: '',
+        isActive3: 'active',
+        isActive4: ''
+    });
+
+    const newId = course_read[course_read.length - 1].id + 1
+    const newCourse = Object.assign(
+        {
+            id: newId,
+            user_id: req.body.student_id,
+            kurs_nomi: req.body.kurs_nomi,
+            created_at: new Date().getDate,
+            comment: req.body.comment
+        }, req.body)
+
+        course_read.push(newCourse)
+
+    fs.writeFile(path.join(__dirname, 'data', 'courses.json'), JSON.stringify(course_read), (err) => {
+        res.status(200).json({
+            status: true,
+            data: {
+                courses: newCourse
+            }
+        })
+    })
+
+    res.redirect('/courses')
+})
+
+app.get('/courses/edit', checkUser, (req, res) => {
+    res.render('courses/edit', {
+        isActive1: '',
+        isActive2: '',
+        isActive3: 'active',
+        isActive4: ''
+    });
+})
+
+app.get('/courses/delete', checkUser, (req, res) => {
+    res.render('courses/delete', {
+        isActive1: '',
+        isActive2: '',
+        isActive3: 'active',
+        isActive4: ''
+    });
 })
 
 app.listen(5555, () => {
