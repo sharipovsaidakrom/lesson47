@@ -187,7 +187,8 @@ app.get('/courses', checkUser, (req, res) => {
         isActive1: '',
         isActive2: '',
         isActive3: 'active',
-        isActive4: ''
+        isActive4: '',
+        courses: course_read
     });
 })
 
