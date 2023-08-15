@@ -9,6 +9,7 @@ app.use(express.urlencoded({extended: true}))
 
 const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/users.json')));
 const payments = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/payments.json')));
+const course_read = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/courses.json')));
 
 const checkUser = (req, res, next) => {
     const username = req.body.username;
@@ -190,40 +191,30 @@ app.get('/courses', checkUser, (req, res) => {
     });
 })
 
-const course_read = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/courses.json')));
+// const course_read = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/courses.json')));
 
 app.get('/courses/add', (req, res) => {
-    res.render('courses/add')
-})
-
-app.post('/courses/add', checkUser, (req, res) => {
     res.render('courses/add', {
         isActive1: '',
         isActive2: '',
         isActive3: 'active',
         isActive4: ''
-    });
-
-    const newId = course_read[course_read.length - 1].id + 1
-    const newCourse = Object.assign(
-        {
-            id: newId,
-            user_id: req.body.student_id,
-            kurs_nomi: req.body.kurs_nomi,
-            created_at: new Date().getDate,
-            comment: req.body.comment
-        }, req.body)
-
-        course_read.push(newCourse)
-
-    fs.writeFile(path.join(__dirname, 'data', 'courses.json'), JSON.stringify(course_read), (err) => {
-        res.status(200).json({
-            status: true,
-            data: {
-                courses: newCourse
-            }
-        })
     })
+})
+
+app.post('/courses/add', checkUser, (req, res) => {
+    const newId = course_read.length + 1
+    console.log(newId);
+    const newCourse = {
+           id: newId,
+           user_id: req.body.student_id,
+           kurs_nomi: req.body.kurs_nomi,
+           created_at: new Date().getDate,
+           comment: req.body.comment
+    }
+    course_read.push(newCourse)
+
+    fs.writeFileSync(path.join(__dirname, 'data', 'courses.json'), JSON.stringify(course_read))
 
     res.redirect('/courses')
 })
@@ -249,4 +240,3 @@ app.get('/courses/delete', checkUser, (req, res) => {
 app.listen(5555, () => {
     console.log("Sayt http://localhost:5555 linkida ishga tushdi");
 })
-
